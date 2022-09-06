@@ -17,6 +17,8 @@ func main() {
 	fmt.Printf("We have total of %v tickets and %v are still available\n", conferenceTickets, remainingTickets)
 	fmt.Println("Get your tickets to attend") // println automatically add a newline for us at the end
 
+	var bookings [50]string // need to assign the size for declaring arrays
+
 	var firstName string // it is required to explicitly define a data type if the value is not assigned at the beginning
 	var lastName string
 	var email string
@@ -38,6 +40,11 @@ func main() {
 	fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
 
 	remainingTickets = remainingTickets - uint(userTickets)
+	bookings[0] = lastName + " " + firstName
+	fmt.Printf("The whole array: %v\n", bookings)
+	fmt.Printf("The array type of the array: %T\n", bookings)
+	fmt.Printf("The array length of the array: %v\n", len(bookings))
+	fmt.Printf("The first value of the array: %v\n", bookings[0])
 	fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
 
 }
