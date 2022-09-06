@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt" // package must be used after imported
+	"strings"
 )
 
 // entry point of the application
@@ -17,39 +18,44 @@ func main() {
 	fmt.Printf("We have total of %v tickets and %v are still available\n", conferenceTickets, remainingTickets)
 	fmt.Println("Get your tickets to attend") // println automatically add a newline for us at the end
 
-	var bookings [50]string   // need to assign the size for declaring arrays
-	var reservations []string // slice: dynamic array in Go
+	// var bookings [50]string   // need to assign the size for declaring arrays
+	var bookings []string // slice: dynamic array in Go
 	// alternativelly, we can init slice like this:
-	// var reservations = []string{}, reservations := []string{}
+	// var bookings = []string{}, bookings := []string{}
 
-	var firstName string // it is required to explicitly define a data type if the value is not assigned at the beginning
-	var lastName string
-	var email string
-	var userTickets int
+	// There is only one type of loop in Go: For loop
+	for {
+		var firstName string // it is required to explicitly define a data type if the value is not assigned at the beginning
+		var lastName string
+		var email string
+		var userTickets int
 
-	// ask the user info
-	fmt.Println("Enter your first name: ")
-	fmt.Scan(&firstName) // pass the address of the variable so Go could assign user inputted value back to the variable
+		// ask the user info
+		fmt.Println("Enter your first name: ")
+		fmt.Scan(&firstName) // pass the address of the variable so Go could assign user inputted value back to the variable
 
-	fmt.Println("Enter your last name: ")
-	fmt.Scan(&lastName)
+		fmt.Println("Enter your last name: ")
+		fmt.Scan(&lastName)
 
-	fmt.Println("Enter your email address: ")
-	fmt.Scan(&email)
+		fmt.Println("Enter your email address: ")
+		fmt.Scan(&email)
 
-	fmt.Println("Enter the no. of tickets you want to book")
-	fmt.Scan(&userTickets)
+		fmt.Println("Enter the no. of tickets you want to book")
+		fmt.Scan(&userTickets)
 
-	fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
+		remainingTickets = remainingTickets - uint(userTickets)
+		bookings = append(bookings, lastName+" "+firstName)
 
-	remainingTickets = remainingTickets - uint(userTickets)
-	bookings[0] = lastName + " " + firstName
-	reservations = append(reservations, lastName+" "+firstName)
-	fmt.Printf("The whole slice: %v\n", reservations)
-	fmt.Printf("The whole array: %v\n", bookings)
-	fmt.Printf("The array type of the array: %T\n", bookings)
-	fmt.Printf("The array length of the array: %v\n", len(bookings)) // check length of the array
-	fmt.Printf("The first value of the array: %v\n", bookings[0])
-	fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
+		fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
+		fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
 
+		firstNames := []string{}
+		for _, booking := range bookings { // _: blank identifier: use to ignore a variable that are not used in Go
+			var names = strings.Fields(booking) // splits the string with white space as separator and returns a slice with split elements
+			firstNames = append(firstNames, names[0])
+		}
+
+		fmt.Printf("The first names of our bookings are %v", firstNames)
+
+	}
 }
