@@ -11,12 +11,10 @@ func main() {
 	const conferenceTickets = 50
 	var remainingTickets uint = 50 // unsigned integer, protect the variable from being negative
 
-	fmt.Printf("conferenceTickets is %T, reremainingTickets is %T, confereconferenceName is %T",
+	fmt.Printf("conferenceTickets is %T, reremainingTickets is %T, confereconferenceName is %T\n",
 		conferenceTickets, remainingTickets, conferenceName) // print out the data types of variables, %T is placeholder for data type
 
-	fmt.Printf("Welcome to our %v booking application\n", conferenceName) // %v: placeholder for variable
-	fmt.Printf("We have total of %v tickets and %v are still available\n", conferenceTickets, remainingTickets)
-	fmt.Println("Get your tickets to attend") // println automatically add a newline for us at the end
+	greetUsers(conferenceName, conferenceTickets, remainingTickets) // function call
 
 	// var bookings [50]string   // need to assign the size for declaring arrays
 	var bookings []string // slice: dynamic array in Go
@@ -61,7 +59,7 @@ func main() {
 				firstNames = append(firstNames, names[0])
 			}
 
-			fmt.Printf("The first names of our bookings are %v", firstNames)
+			fmt.Printf("The first names of our bookings are %v\n", firstNames)
 
 			// var noTicketsRemaining bool = remainingTickets == 0
 			if remainingTickets == 0 {
@@ -81,4 +79,22 @@ func main() {
 			}
 		}
 	}
+
+	// switch syntax
+	// city := "London"
+	// switch city {
+	// case "New York":
+	// 	// execute code for booking New York conference tickets
+	// case "Singapore", "London", "Berlin":
+	// 	fmt.Println("London")
+	// default:
+	// 	fmt.Println("No valid city selected")
+	// }
+}
+
+// defining a function
+func greetUsers(conferenceName string, conferenceTickets int, remainingTickets uint) {
+	fmt.Printf("Welcome to %v booking application\n", conferenceName) // %v: placeholder for variable
+	fmt.Printf("We have total of %v tickets and %v are still available\n", conferenceTickets, remainingTickets)
+	fmt.Println("Get your tickets to attend") // println automatically add a newline for us at the end
 }
