@@ -43,14 +43,19 @@ func main() {
 		fmt.Println("Enter the no. of tickets you want to book")
 		fmt.Scan(&userTickets)
 
-		if userTickets <= int(remainingTickets) {
+		// validate user input
+		var isValidName bool = len(firstName) >= 2 && len(lastName) >= 2
+		var isValidEmail bool = strings.Contains(email, "@")
+		var isValidTicketNumber bool = userTickets > 0 && userTickets <= int(remainingTickets)
+
+		if isValidName && isValidEmail && isValidTicketNumber {
 			remainingTickets = remainingTickets - uint(userTickets)
 			bookings = append(bookings, lastName+" "+firstName)
 
 			fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
 			fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
 
-			firstNames := []string{}
+			firstNames := []string{}           // slice with empty initialization
 			for _, booking := range bookings { // _: blank identifier: use to ignore a variable that are not used in Go
 				var names = strings.Fields(booking) // splits the string with white space as separator and returns a slice with split elements
 				firstNames = append(firstNames, names[0])
@@ -65,7 +70,15 @@ func main() {
 				break // break the entire for loop
 			}
 		} else {
-			fmt.Printf("We only have %v tickets remaining, please book again", remainingTickets)
+			if !isValidName {
+				fmt.Println("first name or last name you entered is too short")
+			}
+			if !isValidEmail {
+				fmt.Println("email address you entered does not contain @ sign")
+			}
+			if !isValidTicketNumber {
+				fmt.Println("number of tickets you entered is invalid")
+			}
 		}
 	}
 }
