@@ -24,7 +24,7 @@ func main() {
 	// var bookings = []string{}, bookings := []string{}
 
 	// There is only one type of loop in Go: For loop
-	for {
+	for remainingTickets > 0 && len(bookings) < 50 {
 		var firstName string // it is required to explicitly define a data type if the value is not assigned at the beginning
 		var lastName string
 		var email string
@@ -67,6 +67,5 @@ func main() {
 		} else {
 			fmt.Printf("We only have %v tickets remaining, please book again", remainingTickets)
 		}
-
 	}
 }
