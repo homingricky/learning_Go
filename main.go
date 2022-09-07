@@ -24,7 +24,7 @@ func main() {
 	// var bookings = []string{}, bookings := []string{}
 
 	// There is only one type of loop in Go: For loop
-	for {
+	for remainingTickets > 0 && len(bookings) < 50 {
 		var firstName string // it is required to explicitly define a data type if the value is not assigned at the beginning
 		var lastName string
 		var email string
@@ -43,19 +43,42 @@ func main() {
 		fmt.Println("Enter the no. of tickets you want to book")
 		fmt.Scan(&userTickets)
 
-		remainingTickets = remainingTickets - uint(userTickets)
-		bookings = append(bookings, lastName+" "+firstName)
+		// validate user input
+		var isValidName bool = len(firstName) >= 2 && len(lastName) >= 2
+		var isValidEmail bool = strings.Contains(email, "@")
+		var isValidTicketNumber bool = userTickets > 0 && userTickets <= int(remainingTickets)
 
-		fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
-		fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
+		if isValidName && isValidEmail && isValidTicketNumber {
+			remainingTickets = remainingTickets - uint(userTickets)
+			bookings = append(bookings, lastName+" "+firstName)
 
-		firstNames := []string{}
-		for _, booking := range bookings { // _: blank identifier: use to ignore a variable that are not used in Go
-			var names = strings.Fields(booking) // splits the string with white space as separator and returns a slice with split elements
-			firstNames = append(firstNames, names[0])
+			fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
+			fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
+
+			firstNames := []string{}           // slice with empty initialization
+			for _, booking := range bookings { // _: blank identifier: use to ignore a variable that are not used in Go
+				var names = strings.Fields(booking) // splits the string with white space as separator and returns a slice with split elements
+				firstNames = append(firstNames, names[0])
+			}
+
+			fmt.Printf("The first names of our bookings are %v", firstNames)
+
+			// var noTicketsRemaining bool = remainingTickets == 0
+			if remainingTickets == 0 {
+				// end program
+				fmt.Println("Our conference is booked out. Come back next year")
+				break // break the entire for loop
+			}
+		} else {
+			if !isValidName {
+				fmt.Println("first name or last name you entered is too short")
+			}
+			if !isValidEmail {
+				fmt.Println("email address you entered does not contain @ sign")
+			}
+			if !isValidTicketNumber {
+				fmt.Println("number of tickets you entered is invalid")
+			}
 		}
-
-		fmt.Printf("The first names of our bookings are %v", firstNames)
-
 	}
 }
