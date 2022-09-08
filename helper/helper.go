@@ -3,6 +3,8 @@ package helper
 import (
 	"fmt"
 	"strings"
+	"sync"
+	"time"
 )
 
 // struct creation syntax
@@ -12,6 +14,8 @@ type UserData struct {
 	email       string
 	userTickets int
 }
+
+var Wg = sync.WaitGroup{}
 
 // the func does not need parameters because package level variables are defined
 func GreetUsers(conferenceName string, conferenceTickets int, remainingTickets uint) {
@@ -82,9 +86,14 @@ func BookTickets(firstName string, lastName string, email string, userTickets in
 	return remainingTickets, bookings
 }
 
+// concurrency in Go
+// break out from main thread and execute SendTicket in a separate thread
+// this optimizes performance of the application
 func SendTicket(userTickets int, firstName string, lastName string, email string) {
+	time.Sleep(5 * time.Second) // stops/ blocks the current thread for defined duration
 	var ticket string = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
 	fmt.Println("###############")
 	fmt.Printf("Sending ticket:\n %v to email address %v\n", ticket, email)
 	fmt.Println("###############")
+	Wg.Done() // decrease the waitgroup counter by 1
 }
