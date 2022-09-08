@@ -11,7 +11,7 @@ const conferenceTickets = 50
 var conferenceName = "Go Conference" // synatic sugar: conferenceName := "Go Congerence"
 var remainingTickets uint = 50       // unsigned integer, protect the variable from being negative
 // var bookings [50]string   // need to assign the size for declaring arrays
-var bookings = make([]map[string]string, 0) // slice: dynamic array in Go
+var bookings = make([]helper.UserData, 0) // slice: dynamic array in Go
 // alternativelly, we can init slice like this:
 // var bookings = []string{}, bookings := []string{}
 // entry point of the application
