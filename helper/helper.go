@@ -61,8 +61,6 @@ func BookTickets(firstName string, lastName string, email string, userTickets in
 	userData["email"] = email
 	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10) // convert decimal uint into string
 
-	// var userDataSlice = make([]map[string]string, 0) // make a slice of map
-
 	bookings = append(bookings, userData)
 
 	fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
