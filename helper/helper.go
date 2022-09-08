@@ -2,6 +2,7 @@ package helper
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -12,11 +13,11 @@ func GreetUsers(conferenceName string, conferenceTickets int, remainingTickets u
 	fmt.Println("Get your tickets to attend") // println automatically add a newline for us at the end
 }
 
-func GetFirstNames(bookings []string) []string {
+func GetFirstNames(bookings []map[string]string) []string {
 	firstNames := []string{}           // slice with empty initialization
 	for _, booking := range bookings { // _: blank identifier: use to ignore a variable that are not used in Go
-		var names = strings.Fields(booking) // splits the string with white space as separator and returns a slice with split elements
-		firstNames = append(firstNames, names[0])
+		// var names = strings.Fields(booking) // splits the string with white space as separator and returns a slice with split elements
+		firstNames = append(firstNames, booking["firstName"])
 	}
 	return firstNames
 }
@@ -50,9 +51,19 @@ func GetUserInput() (string, string, string, int) {
 	return firstName, lastName, email, userTickets
 }
 
-func BookTickets(firstName string, lastName string, email string, userTickets int, remainingTickets uint, bookings []string, conferenceName string) (uint, []string) {
+func BookTickets(firstName string, lastName string, email string, userTickets int, remainingTickets uint, bookings []map[string]string, conferenceName string) (uint, []map[string]string) {
 	remainingTickets = remainingTickets - uint(userTickets)
-	bookings = append(bookings, lastName+" "+firstName)
+
+	// create a map for a user
+	var userData = make(map[string]string) // 1: data type of key; 2: data type of value
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10) // convert decimal uint into string
+
+	// var userDataSlice = make([]map[string]string, 0) // make a slice of map
+
+	bookings = append(bookings, userData)
 
 	fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
 	fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
