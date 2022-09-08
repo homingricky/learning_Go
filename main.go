@@ -11,7 +11,7 @@ const conferenceTickets = 50
 var conferenceName = "Go Conference" // synatic sugar: conferenceName := "Go Congerence"
 var remainingTickets uint = 50       // unsigned integer, protect the variable from being negative
 // var bookings [50]string   // need to assign the size for declaring arrays
-var bookings = make([]helper.UserData, 0) // slice: dynamic array in Go
+var bookings = []helper.UserData{} // slice: dynamic array in Go
 // alternativelly, we can init slice like this:
 // var bookings = []string{}, bookings := []string{}
 // entry point of the application
@@ -25,6 +25,7 @@ func main() {
 
 	// There is only one type of loop in Go: For loop
 	for remainingTickets > 0 && len(bookings) < 50 {
+		fmt.Println(bookings)
 
 		// ask for user input
 		firstName, lastName, email, userTickets := helper.GetUserInput()
@@ -33,7 +34,8 @@ func main() {
 		isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidName && isValidEmail && isValidTicketNumber {
-			remainingTickets, bookings := helper.BookTickets(firstName, lastName, email, userTickets, remainingTickets, bookings, conferenceName)
+			remainingTickets, bookings = helper.BookTickets(firstName, lastName, email, userTickets, remainingTickets, bookings, conferenceName)
+			helper.SendTicket(userTickets, firstName, lastName, email)
 			firstNames := helper.GetFirstNames(bookings)
 			fmt.Printf("The first names of our bookings are %v\n", firstNames)
 

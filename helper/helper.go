@@ -81,3 +81,10 @@ func BookTickets(firstName string, lastName string, email string, userTickets in
 	fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
 	return remainingTickets, bookings
 }
+
+func SendTicket(userTickets int, firstName string, lastName string, email string) {
+	var ticket string = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("###############")
+	fmt.Printf("Sending ticket:\n %v to email address %v\n", ticket, email)
+	fmt.Println("###############")
+}
