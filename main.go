@@ -36,7 +36,7 @@ func main() {
 		if isValidName && isValidEmail && isValidTicketNumber {
 			remainingTickets, bookings = helper.BookTickets(firstName, lastName, email, userTickets, remainingTickets, bookings, conferenceName)
 
-			wg.Add(1) // sets the number of goroutines to wait for, counter is increased by the provided number
+			helper.Wg.Add(1) // sets the number of goroutines to wait for, counter is increased by the provided number
 			go helper.SendTicket(userTickets, firstName, lastName, email)
 			firstNames := helper.GetFirstNames(bookings)
 			fmt.Printf("The first names of our bookings are %v\n", firstNames)
@@ -58,7 +58,7 @@ func main() {
 				fmt.Println("number of tickets you entered is invalid")
 			}
 		}
-		wg.Wait() // blocks the main until waitgroup counter is 0
+		helper.Wg.Wait() // blocks the main until waitgroup counter is 0
 	}
 
 	// switch syntax
