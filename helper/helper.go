@@ -2,9 +2,20 @@ package helper
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
+	"sync"
+	"time"
 )
+
+// struct creation syntax
+type UserData struct {
+	firstName   string
+	lastName    string
+	email       string
+	userTickets int
+}
+
+var Wg = sync.WaitGroup{}
 
 // the func does not need parameters because package level variables are defined
 func GreetUsers(conferenceName string, conferenceTickets int, remainingTickets uint) {
@@ -13,11 +24,11 @@ func GreetUsers(conferenceName string, conferenceTickets int, remainingTickets u
 	fmt.Println("Get your tickets to attend") // println automatically add a newline for us at the end
 }
 
-func GetFirstNames(bookings []map[string]string) []string {
+func GetFirstNames(bookings []UserData) []string {
 	firstNames := []string{}           // slice with empty initialization
 	for _, booking := range bookings { // _: blank identifier: use to ignore a variable that are not used in Go
 		// var names = strings.Fields(booking) // splits the string with white space as separator and returns a slice with split elements
-		firstNames = append(firstNames, booking["firstName"])
+		firstNames = append(firstNames, booking.firstName)
 	}
 	return firstNames
 }
@@ -51,21 +62,38 @@ func GetUserInput() (string, string, string, int) {
 	return firstName, lastName, email, userTickets
 }
 
-func BookTickets(firstName string, lastName string, email string, userTickets int, remainingTickets uint, bookings []map[string]string, conferenceName string) (uint, []map[string]string) {
+func BookTickets(firstName string, lastName string, email string, userTickets int, remainingTickets uint, bookings []UserData, conferenceName string) (uint, []UserData) {
 	remainingTickets = remainingTickets - uint(userTickets)
 
 	// create a map for a user
-	var userData = make(map[string]string) // 1: data type of key; 2: data type of value
-	userData["firstName"] = firstName
-	userData["lastName"] = lastName
-	userData["email"] = email
-	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10) // convert decimal uint into string
+	// var userData = make(map[string]string) // 1: data type of key; 2: data type of value
+	// userData["firstName"] = firstName
+	// userData["lastName"] = lastName
+	// userData["email"] = email
+	// userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10) // convert decimal uint into string
 
-	// var userDataSlice = make([]map[string]string, 0) // make a slice of map
+	var userData = UserData{
+		firstName:   firstName,
+		lastName:    lastName,
+		email:       email,
+		userTickets: userTickets,
+	}
 
 	bookings = append(bookings, userData)
 
 	fmt.Printf("Thank you %v %v for booking %v tickers. You will receive a confirmation email at %v\n", lastName, firstName, userTickets, email)
 	fmt.Printf("There are %v tickets remaining for %v\n", remainingTickets, conferenceName)
 	return remainingTickets, bookings
+}
+
+// concurrency in Go
+// break out from main thread and execute SendTicket in a separate thread
+// this optimizes performance of the application
+func SendTicket(userTickets int, firstName string, lastName string, email string) {
+	time.Sleep(5 * time.Second) // stops/ blocks the current thread for defined duration
+	var ticket string = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("###############")
+	fmt.Printf("Sending ticket:\n %v to email address %v\n", ticket, email)
+	fmt.Println("###############")
+	Wg.Done() // decrease the waitgroup counter by 1
 }
